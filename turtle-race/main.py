@@ -1,46 +1,30 @@
 from turtle import Turtle, Screen
-import turtle as t
 import random
-import colorgram as cg
-
-
-def get_colors():
-    """Extracts colors from an image and returns a list with 30."""
-    colors = cg.extract('spot.jpg',30)
-    color_list = []
-    for color in colors:
-        r = color.rgb.r
-        g = color.rgb.g
-        b = color.rgb.b
-        color_t = (r, g, b)
-        color_list.append(color_t)
-    return color_list
-
-
-def draw_row():
-    tim.pendown()
-    for dot in range(10):
-        tim.dot(20, random.choice(rgb_colors))
-        tim.penup()
-        if dot != 9:
-            tim.forward(50)
-    tim.left(90)
-    tim.forward(40)
-    tim.setx(-250)
-    tim.right(90)
-
-
-rgb_colors = get_colors()
-t.colormode(255)
-tim = Turtle()
-tim.shape("turtle")
-tim.color("NavyBlue")
-tim.penup()
-tim.goto(-250, -250)
-tim.dot(20, random.choice(rgb_colors))
-for row in range(10):
-    draw_row()
 
 screen = Screen()
-screen.exitonclick()
+screen.setup(width=500, height=400)
+user_bet = screen.textinput(title="Make your bet.", prompt="Which turtle will win the race?")
+colors = ['red', 'green', 'blue', 'orange', 'purple', 'yellow']
+turtles = []
+is_race_on = True
+for color in range(6):
+    turtles.append(Turtle(shape="turtle"))
+    turtles[color].color(colors[color])
+    curr_y = -85 + color * 30
+    turtles[color].penup()
+    turtles[color].goto(-230, curr_y)
+while is_race_on:
+    for timmy in turtles:
+        if timmy.xcor() > 230:
+            winner_color = timmy.pencolor()
+            print(f"{winner_color} turtle won!")
+            if winner_color == user_bet:
+                print("You win!")
+            else:
+                print("You lose.")
+            is_race_on = False
+            break
+        new_forward = random.randint(0, 10)
+        timmy.forward(new_forward)
 
+screen.exitonclick()
